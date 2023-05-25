@@ -1,0 +1,12 @@
+automated-api-tests:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+        - name: Run Tests
+          run: |
+            curl -X POST -H "Content-type: application/json" \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer ${{ secrets.TS_API }}" \
+            https://app.testsigma.com/api/v1/execution_results \
+            -d "{\"executionId\": \"2646\"}"
