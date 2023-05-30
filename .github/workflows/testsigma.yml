@@ -1,12 +1,20 @@
-automated-api-tests:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v3
-        - name: Run Tests
-          run: |
-            curl -X POST -H "Content-type: application/json" \
-            -H "Accept: application/json" \
-            -H "Authorization: Bearer ${{ secrets.TS_API }}" \
-            https://app.testsigma.com/api/v1/execution_results \
-            -d "{\"executionId\": \"2646\"}"
+name: Test
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Testsigma Automation Suites
+        env:
+          TESTSIGMA_API_KEY: ${{ secrets.TESTSIGMA_API_KEY }}
+        run: |
+          cd ${{ github.workspace }}/testsigma
+          chmod a+x run-smoke-tests.sh
+          ./run_smoke_tests.sh
