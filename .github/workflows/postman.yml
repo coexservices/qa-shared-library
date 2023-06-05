@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - SBME-150_postman
+  workflow_call:
 
 jobs:
   test:
